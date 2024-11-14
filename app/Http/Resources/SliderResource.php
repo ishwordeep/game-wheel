@@ -22,7 +22,7 @@ class SliderResource extends JsonResource
         ];
 
         if ($this->image) {
-            $data['image'] = asset('uploads/' . $this->image);
+            $data['image'] = asset('storage/' . $this->image);
         }
         $data = array_filter($data, function ($value) {
             return !is_null($value);

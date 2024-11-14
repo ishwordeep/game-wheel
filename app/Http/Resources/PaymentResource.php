@@ -14,6 +14,13 @@ class PaymentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $data=[
+            "id"=> $this->id,
+            "name"=> $this->name,
+        ];
+        if($this->image){
+            $data['image'] = asset('storage/'.$this->image);
+        }
+        return $data;
     }
 }
