@@ -14,6 +14,12 @@ class CustomWinRecordResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            "id" => $this->id,
+            "user" => new UserResource($this->user),
+            "wheel" => new WheelResource($this->wheel),
+            "value" => $this->value,
+            "is_applied" => $this->is_applied,
+        ];
     }
 }
