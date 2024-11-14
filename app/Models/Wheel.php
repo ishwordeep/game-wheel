@@ -13,4 +13,9 @@ class Wheel extends Model
         "win_ratio",
         "value",
     ];
+
+    public function spinRecords()
+    {
+        return $this->hasMany(SpinRecord::class);
+    }
 }

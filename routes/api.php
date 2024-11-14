@@ -4,15 +4,13 @@ use App\Http\Controllers\Admin\GameController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\SpinRecordController;
 use App\Http\Controllers\Admin\WheelController;
 use App\Http\Controllers\Admin\WheelRuleController;
-use App\Http\Controllers\API\Admin\CategoryController;
-use App\Http\Controllers\API\Admin\SubcategoryController;
 use App\Http\Controllers\API\Admin\SwitchActiveStatusController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Middleware\CheckSuperadmin;
 use App\Http\Middleware\CheckSuperadminOrAdmin;
-use App\Models\Wheel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -89,12 +87,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
 
         // wheel
-        Route::controller(WheelController::class)->group(function () {          
+        Route::controller(WheelController::class)->group(function () {
             Route::post('/wheel', 'store');
             Route::get('/wheel', 'index');
             Route::get('/wheel/{id}', 'show');
             Route::post('/wheel/{id}', 'update');
             Route::delete('/wheel/{id}', 'destroy');
+        });
+
+        Route::controller(SpinRecordController::class)->group(function () {
+            Route::get('/spin-record', 'index');
         });
 
         Route::post('/toggle-status/{modelName}/{id}', [SwitchActiveStatusController::class, 'toggleStatus']);
