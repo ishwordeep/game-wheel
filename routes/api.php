@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\GameController;
 use App\Http\Controllers\Admin\PaymentController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\API\Admin\CategoryController;
 use App\Http\Controllers\API\Admin\SubcategoryController;
 use App\Http\Controllers\API\Admin\SwitchActiveStatusController;
@@ -54,6 +56,24 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/payment/{id}', 'show');
             Route::post('/payment/{id}', 'update');
             Route::delete('/payment/{id}', 'destroy');
+        });
+
+        // setting
+        Route::controller(SettingController::class)->group(function () {
+            Route::post('/setting', 'store');
+            Route::get('/setting', 'index');
+            Route::get('/setting/{id}', 'show');
+            Route::post('/setting/{id}', 'update');
+            Route::delete('/setting/{id}', 'destroy');
+        });
+
+        //slider
+        Route::controller(SliderController::class)->group(function () {
+            Route::post('/slider', 'store');
+            Route::get('/slider', 'index');
+            Route::get('/slider/{id}', 'show');
+            Route::post('/slider/{id}', 'update');
+            Route::delete('/slider/{id}', 'destroy');
         });
 
         Route::post('/toggle-status/{modelName}/{id}', [SwitchActiveStatusController::class, 'toggleStatus']);

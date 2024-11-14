@@ -14,6 +14,20 @@ class GameResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $data = [
+            "id" => $this->id,
+            "name" => $this->name,
+            "agent_link" => $this->agent_link,
+            "player_link" => $this->player_link,
+            "display_order" => $this->display_order,
+        ];
+
+        if ($this->image) {
+            $data['image'] = asset('uploads/' . $this->image);
+        }
+        $data = array_filter($data, function ($value) {
+            return !is_null($value);
+        });
+        return $data;
     }
 }
