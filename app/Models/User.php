@@ -43,6 +43,11 @@ class User extends Authenticatable
         return $this->hasMany(SpinRecord::class);
     }
 
+    public function customWinRecords()
+    {
+        return $this->hasMany(CustomWinRecord::class);
+    }
+
     protected function casts(): array
     {
         return [

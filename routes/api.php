@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CustomWinRecordController;
 use App\Http\Controllers\Admin\GameController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\SettingController;
@@ -97,6 +98,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         Route::controller(SpinRecordController::class)->group(function () {
             Route::get('/spin-record', 'index');
+        });
+
+        Route::controller(CustomWinRecordController::class)->group(function () {
+            Route::post('/custom-win-record', 'store');
+            Route::get('/custom-win-record', 'index');
+            Route::get('/custom-win-record/{id}', 'show');
+            Route::post('/custom-win-record/{id}', 'update');
+            Route::delete('/custom-win-record/{id}', 'destroy');
         });
 
         Route::post('/toggle-status/{modelName}/{id}', [SwitchActiveStatusController::class, 'toggleStatus']);

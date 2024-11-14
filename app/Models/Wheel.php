@@ -18,4 +18,9 @@ class Wheel extends Model
     {
         return $this->hasMany(SpinRecord::class);
     }
+
+    public function customWinRecords()
+    {
+        return $this->hasMany(CustomWinRecord::class);
+    }
 }

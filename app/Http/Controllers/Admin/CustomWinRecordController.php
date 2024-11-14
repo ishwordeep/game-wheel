@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\WheelResource;
+use App\Http\Resources\CustomWinRecordResource;
+use App\Models\CustomWinRecord;
 use App\Models\Wheel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
-class WheelController extends Controller
+class CustomWinRecordController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,15 +23,9 @@ class WheelController extends Controller
             $sortBy = $request->input('sort_by', 'created_at');
             $sortOrder = $request->input('sort_order', 'desc');
 
-            $query = Wheel::query();
+            $query = CustomWinRecord::query();
 
-            // Apply keyword filtering if provided
-            if ($request->filled('keyword')) {
-                $keyword = $request->input('keyword');
-                $query->where(function ($q) use ($keyword) {
-                    $q->where('value', 'like', '%' . $keyword . '%');
-                });
-            }
+
 
             // Apply sorting
             $query->orderBy($sortBy, $sortOrder);
@@ -40,17 +35,17 @@ class WheelController extends Controller
 
             return apiResponse([
                 'status' => true,
-                'message' => 'Wheels retrieved successfully',
+                'message' => 'CustomWinRecords retrieved successfully',
                 'data' => [
                     'count' => $items->count(),
-                    'rows' => WheelResource::collection($items),
+                    'rows' => CustomWinRecordResource::collection($items),
                     'pagination' =>  $items->count() > 0 ? paginate($items) : null
                 ]
             ]);
         } catch (\Exception $e) {
             return apiResponse([
                 'status' => false,
-                'message' => 'An error occurred while retrieving wheels',
+                'message' => 'An error occurred while retrieving customWinRecords',
                 'errors' => $e->getMessage(),
                 'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
             ]);
@@ -65,23 +60,25 @@ class WheelController extends Controller
         DB::beginTransaction();
         try {
             $data = [
-                'value' => $request->value,
-                'win_ratio' => $request->win_ratio,
+                'user_id' => $request->user_id,
+                'wheel_id' => $request->wheel_id,
+                'is_applied' => $request->is_applied ?? false,
             ];
+            $data['value'] = Wheel::find($data['wheel_id'])->value;
 
-            $item = Wheel::create($data);
+            $item = CustomWinRecord::create($data);
             DB::commit();
             return apiResponse([
                 'status' => true,
-                'message' => 'wheel created successfully',
-                'data' => new WheelResource($item),
+                'message' => 'CustomWinRecord created successfully',
+                'data' => new CustomWinRecordResource($item),
                 'statusCode' => Response::HTTP_CREATED,
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
             return apiResponse([
                 'status' => false,
-                'message' => 'wheel creation failed',
+                'message' => 'CustomWinRecord creation failed',
                 'errors' => $e->getMessage(),
                 'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
             ]);
@@ -94,23 +91,23 @@ class WheelController extends Controller
     public function show(string $id)
     {
         try {
-            $item = Wheel::findOrFail($id);
+            $item = CustomWinRecord::findOrFail($id);
 
             return apiResponse([
                 'status' => true,
-                'message' => 'Wheel retrieved successfully',
-                'data' => new WheelResource($item),
+                'message' => 'CustomWinRecord retrieved successfully',
+                'data' => new CustomWinRecordResource($item),
             ]);
         } catch (ModelNotFoundException $e) {
             return apiResponse([
                 'status' => false,
-                'message' => 'Wheel not found',
+                'message' => 'CustomWinRecord not found',
                 'statusCode' => Response::HTTP_NOT_FOUND,
             ]);
         } catch (\Exception $e) {
             return apiResponse([
                 'status' => false,
-                'message' => 'An error occurred while retrieving the wheel',
+                'message' => 'An error occurred while retrieving the customWinRecord',
                 'errors' => $e->getMessage(),
                 'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
             ]);
@@ -124,30 +121,34 @@ class WheelController extends Controller
     {
         DB::beginTransaction();
         try {
-            $item = Wheel::findOrFail($id);
+            $item = CustomWinRecord::findOrFail($id);
 
-            $data = $request->only(['value', 'win_ratio']);
+            $data = $request->only(['wheel_id', 'user_id', 'is_applied']);
+
+            if($request->has('wheel_id')){
+                $data['value'] = Wheel::find($data['wheel_id'])->value;
+            }
 
 
             $item->update($data);
             DB::commit();
             return apiResponse([
                 'status' => true,
-                'message' => 'Wheel updated successfully',
-                'data' => new WheelResource($item),
+                'message' => 'CustomWinRecord updated successfully',
+                'data' => new CustomWinRecordResource($item),
             ]);
         } catch (ModelNotFoundException $e) {
             DB::rollBack();
             return apiResponse([
                 'status' => false,
-                'message' => 'Wheel not found',
+                'message' => 'CustomWinRecord not found',
                 'statusCode' => Response::HTTP_NOT_FOUND,
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
             return apiResponse([
                 'status' => false,
-                'message' => 'An error occurred while updating the wheel',
+                'message' => 'An error occurred while updating the CustomWinRecord',
                 'errors' => $e->getMessage(),
                 'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
             ]);
@@ -161,7 +162,7 @@ class WheelController extends Controller
     {
         DB::beginTransaction();
         try {
-            $item = Wheel::findOrFail($id);
+            $item = CustomWinRecord::findOrFail($id);
 
             $item->delete();
             DB::commit();
@@ -169,14 +170,14 @@ class WheelController extends Controller
             // Return success response
             return apiResponse([
                 'status' => true,
-                'message' => 'Wheel deleted successfully',
+                'message' => 'CustomWinRecord deleted successfully',
             ]);
         } catch (ModelNotFoundException $e) {
             DB::rollBack();
             // If wheel not found, return 404
             return apiResponse([
                 'status' => false,
-                'message' => 'Wheel not found',
+                'message' => 'CustomWinRecord not found',
                 'statusCode' => Response::HTTP_NOT_FOUND,
             ]);
         } catch (\Exception $e) {
@@ -184,7 +185,7 @@ class WheelController extends Controller
             // For any other exception, return internal server error
             return apiResponse([
                 'status' => false,
-                'message' => 'An error occurred while deleting the wheel',
+                'message' => 'An error occurred while deleting the CustomWinRecord',
                 'errors' => $e->getMessage(),
                 'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
             ]);
