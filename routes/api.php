@@ -41,7 +41,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
     // Super Admin & Admin Accessible Routes 
-    Route::middleware([CheckSuperadminOrAdmin::class])->group(function () {
+    Route::prefix('admin')->middleware([CheckSuperadminOrAdmin::class])->group(function () {
 
         Route::controller(GameController::class)->group(function () {
             Route::post('/game', 'store');
@@ -126,3 +126,5 @@ Route::get('/test', function (Request $request) {
 
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/frontend.php';
+

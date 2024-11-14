@@ -14,6 +14,18 @@ class SettingResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $data = [
+            "id" => $this->id,
+            "name" => $this->name,
+            "spin_frequency" => $this->spin_frequency
+        ];
+
+        if ($this->image) {
+            $data['image'] = asset('storage/' . $this->image);
+        }
+        $data = array_filter($data, function ($value) {
+            return !is_null($value);
+        });
+        return $data;
     }
 }
