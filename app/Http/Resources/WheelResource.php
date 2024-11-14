@@ -14,10 +14,14 @@ class WheelResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            "id"=> $this->id,
-            "value"=> $this->value,
-            "win_ratio"=> $this->win_ratio,
+        $data= [
+            "id" => $this->id,
+            "value" => $this->value,
+            "win_ratio" => $request->has('exclude_win_ratio') ? null : $this->win_ratio,
         ];
+        $data = array_filter($data, function ($value) {
+            return !is_null($value);
+        });
+        return $data;
     }
 }

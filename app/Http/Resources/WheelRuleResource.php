@@ -14,10 +14,14 @@ class WheelRuleResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $data= [
             "id"=> $this->id,
             "title"=> $this->title,
             "description"=> $this->description,
         ];
+        $data = array_filter($data, function ($value) {
+            return !is_null($value);
+        });
+        return $data;
     }
 }

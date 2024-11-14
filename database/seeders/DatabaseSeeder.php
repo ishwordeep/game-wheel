@@ -17,6 +17,9 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        // call TestDataSeeder
+        $this->call(TestDataSeeder::class);
+
        
 
         DB::table('users')->insert([
