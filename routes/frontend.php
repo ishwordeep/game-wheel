@@ -32,3 +32,4 @@ Route::controller(WheelRuleController::class)->group(function () {
 Route::controller(WheelController::class)->group(function () {
     Route::get('wheel-values', 'index');
 });
+

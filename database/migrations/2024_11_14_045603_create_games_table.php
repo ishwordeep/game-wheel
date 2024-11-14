@@ -103,11 +103,11 @@ return new class extends Migration
         Schema::dropIfExists('custom_win_records');
         Schema::dropIfExists('user_balances');
         Schema::dropIfExists('spin_records');
-        Schema::dropIfExists('wheels');
-        Schema::dropIfExists('wheel_rules');
-        Schema::dropIfExists('sliders');
-        Schema::dropIfExists('settings');
-        Schema::dropIfExists('payments');
-        Schema::dropIfExists('games');
+        Schema::dropIfExists('wheels');//
+        Schema::dropIfExists('wheel_rules');//
+        Schema::dropIfExists('sliders');//
+        Schema::dropIfExists('settings');//
+        Schema::dropIfExists('payments');//
+        Schema::dropIfExists('games');//
     }
 };

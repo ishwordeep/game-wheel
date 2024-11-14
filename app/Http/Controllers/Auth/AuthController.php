@@ -36,13 +36,17 @@ class AuthController extends Controller
 
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'name' => 'string|max:255',
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:6',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        if (!$request->filled('name')) {
+            $request->merge(['name' => $request->username]);
         }
         // Set role to customer by default if no role is specified
         // $role = $request->role ?? 'customer';
@@ -60,6 +64,32 @@ class AuthController extends Controller
             'message' => 'User registered successfully',
             'data' => $user,
         ], 201);
+    }
+
+    public function suggestUsernames()
+    {
+        $suggestions = [];
+        $attempts = 0;
+
+        // Generate a random base username (e.g., a random word or string)
+        $baseUsername = Str::random(4); // You can adjust the length here as needed
+
+        while (count($suggestions) < 3 && $attempts < 10) {
+            // Generate a random suffix to append to the base username
+            $suffix = Str::random(3); // generates a 3-character random string
+            $suggestedUsername = $baseUsername . $suffix;
+
+            // Ensure it meets the length requirement (6-9 characters)
+            if (strlen($suggestedUsername) >= 6 && strlen($suggestedUsername) <= 9) {
+                // Check if this username already exists in the database
+                if (!User::where('username', $suggestedUsername)->exists()) {
+                    $suggestions[] = $suggestedUsername;
+                }
+            }
+            $attempts++;
+        }
+
+        return response()->json($suggestions);
     }
 
     public function login(Request $request)

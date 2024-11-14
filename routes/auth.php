@@ -14,6 +14,8 @@ Route::middleware('throttle:rate-limiter')->group(function () {
 
     // Authentications
     Route::post('/register', [AuthController::class, 'register'])->middleware(['auth:sanctum', CheckSuperadmin::class]);
+    Route::get('/suggest-usernames', [AuthController::class, 'suggestUsernames']);
+
 
     Route::post('/login', [AuthController::class, 'login']);
 });
