@@ -17,8 +17,13 @@ class UserResource extends JsonResource
         $data = [
             'id' => $this->id,
             'name' => $this->name,
+            'username' => $this->username,
             'is_active' => $this->is_active,
+            'total_balance' => $this->total_balance,
         ];
+        if($this->image){
+            $data['image'] = asset('storage/'.$this->image);
+        }
 
         $data = array_filter($data, function ($value) {
             return !is_null($value);
