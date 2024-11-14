@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Wheel extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        "win_ratio",
+        "value",
+    ];
 }

@@ -4,12 +4,14 @@ use App\Http\Controllers\Admin\GameController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\WheelRuleController;
 use App\Http\Controllers\API\Admin\CategoryController;
 use App\Http\Controllers\API\Admin\SubcategoryController;
 use App\Http\Controllers\API\Admin\SwitchActiveStatusController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Middleware\CheckSuperadmin;
 use App\Http\Middleware\CheckSuperadminOrAdmin;
+use App\Models\Wheel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -74,6 +76,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/slider/{id}', 'show');
             Route::post('/slider/{id}', 'update');
             Route::delete('/slider/{id}', 'destroy');
+        });
+
+        // rule
+        Route::controller(WheelRuleController::class)->group(function () {
+            Route::post('/rule', 'store');
+            Route::get('/rule', 'index');
+            Route::get('/rule/{id}', 'show');
+            Route::post('/rule/{id}', 'update');
+            Route::delete('/rule/{id}', 'destroy');
         });
 
         Route::post('/toggle-status/{modelName}/{id}', [SwitchActiveStatusController::class, 'toggleStatus']);
