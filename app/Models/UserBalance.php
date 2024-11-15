@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class UserBalance extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'value',
+        'spin_record_id',
+        'user_id'
+    ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function spinRecord(){
+        return $this->belongsTo(SpinRecord::class);
+    }
 }

@@ -14,11 +14,16 @@ class SpinRecordResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $data = [
             "id" => $this->id,
-            "user" => new UserResource($this->user),
-            "wheel" => new WheelResource($this->wheel),
+            // "wheel" => new WheelResource($this->wheel),
             "value" => $this->value,
+            'spin_date' => $this->created_at ? $this->created_at->format('Y-m-d') : null,
+            'spin_time' => $this->created_at ? $this->created_at->format('H:i:s') : null,
         ];
+        $data = array_filter($data, function ($value) {
+            return !is_null($value);
+        });
+        return $data;
     }
 }

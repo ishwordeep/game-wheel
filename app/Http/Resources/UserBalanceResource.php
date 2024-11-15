@@ -14,6 +14,16 @@ class UserBalanceResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $data = [
+            "id" => $this->id,
+            "amount" => $this->value,
+        ];
+        if($this->spin_record_id){
+            $data['spin'] = new SpinRecordResource($this->spinRecord);
+        }
+        $data = array_filter($data, function ($value) {
+            return !is_null($value);
+        });
+        return $data;
     }
 }

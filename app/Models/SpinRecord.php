@@ -22,4 +22,8 @@ class SpinRecord extends Model
         return $this->belongsTo(Wheel::class);
     }
 
+    public function userBalance(){
+        return $this->hasOne(UserBalance::class);
+    }
+
 }

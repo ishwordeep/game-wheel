@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Frontend\GameController;
 use App\Http\Controllers\Frontend\PaymentController;
+use App\Http\Controllers\Frontend\PlayerController;
 use App\Http\Controllers\Frontend\SettingController;
 use App\Http\Controllers\Frontend\SliderController;
 use App\Http\Controllers\Frontend\WheelController;
@@ -31,5 +32,10 @@ Route::controller(WheelRuleController::class)->group(function () {
 });
 Route::controller(WheelController::class)->group(function () {
     Route::get('wheel-values', 'index');
+});
+
+Route::middleware(['auth:sanctum'])->controller(PlayerController::class)->group(function () {
+    Route::get('spin-records', 'spinRecordsByUser');
+    Route::get('player-balance-history/{type}', 'userBalanceHistory');
 });
 
