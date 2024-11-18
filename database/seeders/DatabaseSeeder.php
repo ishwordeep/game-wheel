@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         // call TestDataSeeder
         $this->call(TestDataSeeder::class);
 
-       
+
 
         DB::table('users')->insert([
             [
@@ -31,7 +31,15 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
                 'role' => 'superadmin',
             ],
-           
+            [
+                'name' => 'Player1',
+                'username' => 'player1',
+                'password' => Hash::make('player1'),
+                'created_at' => now(),
+                'updated_at' => now(),
+                "role" => "player"
+            ]
+
         ]);
     }
 }
