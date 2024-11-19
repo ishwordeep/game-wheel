@@ -85,20 +85,29 @@ class TestDataSeeder extends Seeder
         ]);
         DB::table("wheels")->insert([
             [
-                "value" => 1,
+                "value" => 0,
+                "win_ratio" => 0,
+                "display_name" => "No Luck"
+            ],
+            [
+                "value" => 10,
                 "win_ratio" => 0.1,
+                "display_name" => "Ten"
             ],
             [
-                "value" => 2,
+                "value" => 20,
                 "win_ratio" => 0.2,
+                "display_name" => "Twenty"
             ],
             [
-                "value" => 3,
+                "value" => 30,
                 "win_ratio" => 0.3,
+                "display_name" => "Thirty"
             ],
             [
-                "value" => 4,
+                "value" => 40,
                 "win_ratio" => 0.4,
+                "display_name" => "Forty"
             ]
         ]);
     }
