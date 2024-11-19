@@ -56,6 +56,7 @@ return new class extends Migration
         Schema::create('wheels', function (Blueprint $table) {
             $table->id();
             $table->double('value')->nullable();
+            $table->string('display_name')->nullable();
             $table->double('win_ratio')->nullable();
             $table->timestamps();
         });

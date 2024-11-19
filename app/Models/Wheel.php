@@ -12,6 +12,7 @@ class Wheel extends Model
     protected $fillable = [
         "win_ratio",
         "value",
+        "display_name"
     ];
 
     public function spinRecords()

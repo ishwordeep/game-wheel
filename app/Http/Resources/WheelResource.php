@@ -17,6 +17,7 @@ class WheelResource extends JsonResource
         $data= [
             "id" => $this->id,
             "value" => $this->value,
+            "display_name" => $this->display_name,
             "win_ratio" => $request->has('exclude_win_ratio') ? null : $this->win_ratio,
         ];
         $data = array_filter($data, function ($value) {

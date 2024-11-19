@@ -67,6 +67,7 @@ class WheelController extends Controller
             $data = [
                 'value' => $request->value,
                 'win_ratio' => $request->win_ratio,
+                'display_name' => $request->display_name,
             ];
 
             $item = Wheel::create($data);
@@ -126,7 +127,7 @@ class WheelController extends Controller
         try {
             $item = Wheel::findOrFail($id);
 
-            $data = $request->only(['value', 'win_ratio']);
+            $data = $request->only(['value', 'win_ratio','display_name']);
 
 
             $item->update($data);
