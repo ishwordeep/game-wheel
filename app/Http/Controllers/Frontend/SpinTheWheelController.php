@@ -32,18 +32,27 @@ class SpinTheWheelController extends Controller
             }
 
             // check spin_frequency
-            $nextSpinTime=$this->validateSpinRequest();
-            if($nextSpinTime){
+            $nextSpinTime = $this->validateSpinRequest();
+            if ($nextSpinTime) {
                 return apiResponse([
                     'status' => false,
-                    'message' => 'You can spin the wheel again after '.$nextSpinTime['time_remaining'],
+                    'message' => 'You can spin the wheel again after ' . $nextSpinTime['time_remaining'],
                     'data' => [
                         'next_allowed_spin_time' => $nextSpinTime['next_allowed_spin_time'],
-                        'time_remaining'=> $nextSpinTime['time_remaining'],
+                        'time_remaining' => $nextSpinTime['time_remaining'],
                     ],
                     'statusCode' => Response::HTTP_FORBIDDEN,
                 ]);
             }
+
+            $customWinRecords = auth()->user()->customWinRecords()->where('is_applied', false)->first();
+            if ($customWinRecords) {
+                $customWinRecords->update([
+                    'is_applied' => true,
+                ]);
+            }
+
+
 
             $spinRecord = SpinRecord::create([
                 'wheel_id' => $wheel_id,
@@ -114,5 +123,33 @@ class SpinTheWheelController extends Controller
             ];
         }
         return;
+    }
+
+    public function spinWinningValue()
+    {
+
+        $customWinRecords = auth()->user()->customWinRecords()->where('is_applied', false)->first();
+        if (!$customWinRecords) {
+            $winningValue = $this->calculateWinNumber(auth()->id());
+            return $winningValue;
+        }
+        return $customWinRecords->value;
+    }
+
+    private function calculateWinNumber()
+    {
+        $wheels = Wheel::get();
+        $totalWinRatio = $wheels->sum('win_ratio');
+        $randomNumber = mt_rand(1, $totalWinRatio * 100) / 100;
+        $currentRatio = 0;
+        $choice = null;
+        foreach ($wheels as $wheel) {
+            $currentRatio += $wheel->win_ratio;
+            if ($randomNumber <= $currentRatio) {
+                $choice = $wheel->value;
+                break;
+            }
+        }
+        return $choice;
     }
 }

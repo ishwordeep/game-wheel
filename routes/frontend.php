@@ -44,6 +44,7 @@ Route::middleware(['auth:sanctum'])->controller(SpinTheWheelController::class)->
 
     Route::post('spin-the-wheel', 'index');
     Route::get('next-spin-time', 'validateSpinRequest');
+    Route::get('winning-value', 'spinWinningValue');
 
 });
 
