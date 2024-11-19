@@ -20,7 +20,7 @@ class SpinTheWheelController extends Controller
         DB::beginTransaction();
         try {
             $user = auth()->user();
-            $wheel_id = $request->wheel_id;
+            // $wheel_id = $request->wheel_id;
             $value = $request->value;
 
             if ($user->role != 'player') {
@@ -55,7 +55,7 @@ class SpinTheWheelController extends Controller
 
 
             $spinRecord = SpinRecord::create([
-                'wheel_id' => $wheel_id,
+                // 'wheel_id' => $wheel_id,
                 'user_id' => $user->id,
                 'value' => $value,
             ]);
@@ -130,7 +130,7 @@ class SpinTheWheelController extends Controller
 
         $customWinRecords = auth()->user()->customWinRecords()->where('is_applied', false)->first();
         if (!$customWinRecords) {
-            $winningValue = $this->calculateWinNumber(auth()->id());
+            $winningValue = $this->calculateWinNumber();
             return $winningValue;
         }
         return $customWinRecords->value;
@@ -140,7 +140,7 @@ class SpinTheWheelController extends Controller
     {
         $wheels = Wheel::get();
         $totalWinRatio = $wheels->sum('win_ratio');
-        $randomNumber = mt_rand(1, $totalWinRatio * 100) / 100;
+        $randomNumber = mt_rand(1, $totalWinRatio * 100) / 100;//0.2
         $currentRatio = 0;
         $choice = null;
         foreach ($wheels as $wheel) {
