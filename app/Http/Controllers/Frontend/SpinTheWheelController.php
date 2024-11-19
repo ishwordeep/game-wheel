@@ -110,7 +110,7 @@ class SpinTheWheelController extends Controller
         // Calculate next allowed spin time
         $nextAllowedSpinTime = $lastSpinDateTime->addHours($spinFrequency);
 
-        // Check if the current time is before the next allowed spin time
+        // Check if the current time is before th e next allowed spin time
         if (now()->lessThan($nextAllowedSpinTime)) {
             $timeRemaining = $nextAllowedSpinTime->diffForHumans([
                 'parts' => 2, // Limit to 2 time parts, e.g., "1 hour and 15 minutes"

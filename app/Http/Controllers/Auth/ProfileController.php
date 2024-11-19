@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Frontend\SpinTheWheelController;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,11 +16,20 @@ class ProfileController extends Controller
 {
     public function user(Request $request)
     {
-        return response()->json([
+        $SpinController = new SpinTheWheelController();
+        $canSpin = $SpinController->validateSpinRequest() ? false : true;
+        $response = [
             'success' => true,
             'message' => 'User details fetched successfully',
-            'user' => new UserResource($request->user())
-        ], Response::HTTP_OK);
+            'user' => new UserResource($request->user()),
+            'can_spin' => $canSpin,
+        ];
+
+        if (!$canSpin) {
+            $response['next_spin_time'] = $SpinController->validateSpinRequest();
+        }
+
+        return response()->json($response, Response::HTTP_OK);
     }
 
     public function profileUpdate(Request $request)
