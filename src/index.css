@@ -1,0 +1,32 @@
+@font-face {
+  font-family: "Jaini";
+  src: url("/jaini.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.swiper {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.hero-slide {
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.fade-in {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.sc-eCssSg hmocIu {
+  width: 100% !important;
+}
