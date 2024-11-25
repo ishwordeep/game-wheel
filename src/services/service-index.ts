@@ -77,7 +77,7 @@ const useFetchUserLists = ({ page = 1, perPage = 10, keyword = "" }) => {
       perPage,
       keyword,
     }),
-    queryKey: ["userLists"],
+    queryKey: ["users"],
   });
 };
 

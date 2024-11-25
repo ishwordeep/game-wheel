@@ -7,6 +7,7 @@ export interface IPagination {
 const Auth = {
   login: "/login",
   me: "/user",
+  register: "/register",
   forgot: "/forgot-password",
   reset: "/reset-password",
 };

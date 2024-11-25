@@ -1,13 +1,22 @@
+import { AddButton } from "@/components/Button";
 import { DataTable, StatusSwitch } from "@/components/DataTable";
 import { SearchInput } from "@/components/Form";
 import LazyImage from "@/components/LazyImage";
 import { UserListResponse, useFetchUserLists } from "@/services/service-index";
 import { IRow } from "@/services/service-response";
 import SetHeader from "@/utils/SetHeader";
-import { HStack, Icon, IconButton, Stack, Text } from "@chakra-ui/react";
+import {
+  HStack,
+  Icon,
+  IconButton,
+  Stack,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { DotsThreeOutlineVertical } from "@phosphor-icons/react";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import UserForm from "./Form";
 
 const Users = () => {
   const location = useLocation();
@@ -16,7 +25,11 @@ const Users = () => {
   const [pageIndex, setPageIndex] = useState(pageFromUrl);
   const [id, setId] = useState<number | null>(null);
   const [keyword, setKeyword] = useState<string>("");
-
+  const {
+    isOpen: isFormOpen,
+    onOpen: onFormOpen,
+    onClose: onFormClose,
+  } = useDisclosure();
   const columns = [
     {
       header: "S.N",
@@ -145,6 +158,8 @@ const Users = () => {
             placeholder="Search ..."
             maxW={"300px"}
           />
+          <AddButton onClick={onFormOpen} />
+          <UserForm id={id} isOpen={isFormOpen} onClose={onFormClose} />
         </HStack>
       </DataTable>
     </>

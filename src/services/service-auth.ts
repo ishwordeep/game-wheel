@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Api } from "./service-api";
 import { ApiClient } from "./service-axios";
+import { useMutate } from "./service-form-methods";
 import TokenService from "./service-token";
 
 export const authTokenKey = "authTokenKey";
@@ -85,6 +86,14 @@ const checkAuthentication = async () => {
   }
 };
 
+const useRegisterUser = () => {
+  return useMutate({
+    url: Api.Auth.register,
+    invalidates: ["users"],
+    message: "User added successfully",
+  });
+};
+
 /**
  * Check if user is authenticated
  * @returns boolean
@@ -107,4 +116,10 @@ const useAuthentication = () => {
   });
 };
 
-export { checkAuthentication, useAuthentication, useLogin, useLogout };
+export {
+  checkAuthentication,
+  useAuthentication,
+  useLogin,
+  useLogout,
+  useRegisterUser,
+};
